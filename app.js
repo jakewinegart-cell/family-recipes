@@ -73,9 +73,18 @@
     if (s.length > 1) slideTimer = setInterval(() => { s[i].classList.remove("on"); i = (i + 1) % s.length; s[i].classList.add("on"); }, 7000);
   }
 
+  function renderLastAdded() {
+    const el = $("#lastAdded");
+    const last = recipes.reduce((a, r) => (!a || (r.created_at || "") > (a.created_at || "") ? r : a), null);
+    if (!last) { el.classList.add("hidden"); el.innerHTML = ""; return; }
+    const t = last.title || "", short = t.length > 60 ? t.slice(0, 57).trimEnd() + "…" : t;
+    el.innerHTML = `Last recipe added by ${esc(last.contributor || "someone")}: <a href="#r/${esc(last.id)}" title="${esc(t)}"><i>${esc(short)}</i></a>`;
+    el.classList.remove("hidden");
+  }
   async function loadAll() {
     [recipes, categories, settings, news] = await Promise.all([S.listRecipes(), S.getCategories(), S.getSettings(), S.listNews().catch(() => [])]);
     $("#appTitle").textContent = settings.title; $("#appSubtitle").textContent = settings.subtitle; document.title = settings.title;
+    renderLastAdded();
     $("#catFilter").innerHTML = `<option value="">All categories</option>` + categories.map(c => `<option>${esc(c)}</option>`).join("");
   }
 
