@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Winegart Family's Collection of Recipes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Playfair+Display:ital,wght@0,600;1,500&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=rec9">
+</head><body>
+<div id="gateScreen" class="gate">
+  <form id="entryForm" class="doorway" autocomplete="off">
+    <svg class="arch" viewBox="0 0 300 400" aria-hidden="true">
+      <path d="M30,395 L30,170 A120,120 0 0 1 270,170 L270,395" />
+      <path class="inner" d="M48,395 L48,175 A102,102 0 0 1 252,175 L252,395" />
+      <circle cx="150" cy="120" r="16"/><path class="inner" d="M150,96 L150,144 M126,120 L174,120 M133,103 L167,137 M167,103 L133,137"/>
+      <path class="inner" d="M48,250 Q20,230 30,200 M252,250 Q280,230 270,200"/>
+    </svg>
+    <h1 class="speak">Speak Friend, And Enter</h1>
+    <input id="entryPw" type="password" placeholder="Password" aria-label="Family password" autocomplete="current-password">
+    <button class="enterbtn">Enter</button>
+    <p id="entryErr" class="closed" aria-live="polite"></p>
+  </form>
+</div>
+<div id="slides" aria-hidden="true"></div><div id="overlay" aria-hidden="true"></div>
+<nav class="topbar"><div class="tabs" role="tablist">
+  <button class="tab active" data-tab="browse">Browse</button>
+  <button class="tab" data-tab="add">Add New Entry</button>
+  <button class="tab hidden" data-tab="admin" id="adminTab">Admin</button>
+</div><div id="weather" class="weather hidden" aria-live="polite"></div></nav>
+<header class="hero">
+  <h1 id="appTitle">The Winegart Family's Collection of Recipes</h1>
+  <p id="appSubtitle"></p>
+</header>
+<main id="main">
+  <section id="tab-browse" class="panel">
+    <div class="homegrid" id="homeGrid">
+      <div id="chartCard" class="card chartcard"></div>
+      <aside id="newsCard" class="card news">
+        <button class="newstoggle" id="newsToggle" aria-expanded="false">📜 Family News <span id="newsCount"></span><i>▾</i></button>
+        <div class="newsbody" id="newsBody">
+          <h3 class="newshead">📜 Family News</h3>
+          <form id="newsForm"><textarea id="newsText" rows="3" maxlength="500" placeholder="Share some family news…"></textarea>
+            <input id="newsName" placeholder="Your name" maxlength="100"><button class="btn small" id="newsPost">Post</button></form>
+          <ul id="newsList" class="newslist"></ul>
+        </div>
+      </aside>
+    </div>
+    <div class="filters card">
+      <input id="search" type="search" placeholder="Search recipes, ingredients, names…">
+      <select id="catFilter"></select>
+    </div>
+    <div id="cards" class="cards"></div>
+    <div id="detail" class="hidden"></div>
+  </section>
+  <section id="tab-add" class="panel hidden"><div id="wizard" class="card"></div></section>
+  <section id="tab-admin" class="panel hidden"></section>
+</main>
+<footer class="foot">Made with love for the Winegart family table · <span id="storeMode"></span></footer>
+<div id="toast" class="toast hidden"></div>
+<script src="config.js?v=rec9"></script>
+<script src="storage.js?v=rec9"></script>
+<script src="app.js?v=rec9"></script>
+</body></html>
