@@ -20,7 +20,9 @@ window.RECIPES_CONFIG = {
 
   DEFAULT_TITLE: "The Winegart Family's Collection of Recipes",
   DEFAULT_SUBTITLE: "Handed down, written down, and shared at the table",
-  DEFAULT_CATEGORIES: ["Bread","Cookies","Desserts","Breakfast Baking","Main Dishes","Soups","Sides","Salads","Appetizers","Drinks","Sauces","Holiday","Other"],
+  DEFAULT_CATEGORIES: ["Bread","Cookies","Desserts","Breakfast Baking","Main Dishes","Soups","Sides","Salads","Appetizers","Drinks","Sauces","Holiday","Gluten Free","Other"],
+  // Fixed chart colors for specific categories (others use the palette by position).
+  CATEGORY_COLORS: { "Gluten Free": "#7fa650" },
   DEFAULT_BACKGROUNDS: ["bg/shire-real1.jpg","bg/shire-real2.jpg"],
   // Crop focus (CSS background-position) per background file, biased toward the right-hand doors.
   BG_POSITIONS: {

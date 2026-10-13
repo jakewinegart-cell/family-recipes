@@ -25,7 +25,19 @@
   await S.init();
   /* ---------- entry gate ---------- */
   const gate = $("#gateScreen");
-  if (localStorage.getItem("wr_entered") === "1") gate.remove();
+  /* ---------- visit counter (counted once per browser session, after the gate) ---------- */
+  async function showVisits() {
+    const el = $("#visits");
+    try {
+      let n;
+      if (!sessionStorage.getItem("wr_counted")) { n = await S.incrementVisits(); sessionStorage.setItem("wr_counted", "1"); }
+      else n = await S.getVisits();
+      if (typeof n !== "number" || !isFinite(n)) throw 0;
+      el.innerHTML = `<span aria-hidden="true">👁</span> ${n.toLocaleString("en-US")}<span class="vlabel"> visits</span>`;
+      el.title = `${n.toLocaleString("en-US")} visits`; el.classList.remove("hidden");
+    } catch { el.classList.add("hidden"); }
+  }
+  if (localStorage.getItem("wr_entered") === "1") { gate.remove(); showVisits(); }
   else {
     document.body.classList.add("gated");
     $("#entryPw").focus();
@@ -35,7 +47,7 @@
       const f = $("#entryForm");
       if (!ok) { $("#entryErr").textContent = "The door remains closed."; f.classList.remove("shake"); void f.offsetWidth; f.classList.add("shake"); $("#entryPw").select(); return; }
       localStorage.setItem("wr_entered", "1"); $("#entryErr").textContent = "";
-      gate.classList.add("open"); document.body.classList.remove("gated"); setTimeout(() => gate.remove(), 900);
+      gate.classList.add("open"); document.body.classList.remove("gated"); setTimeout(() => gate.remove(), 900); showVisits();
     };
   }
   $("#storeMode").textContent = S.name;
@@ -92,7 +104,7 @@
     const box = $("#chartCard"), cat = $("#catFilter").value, total = recipes.length;
     const counts = {}; recipes.forEach(r => counts[r.category] = (counts[r.category] || 0) + 1);
     const items = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-    const color = c => PALETTE[Math.max(0, categories.indexOf(c)) % PALETTE.length];
+    const color = c => (C.CATEGORY_COLORS || {})[c] || PALETTE[Math.max(0, categories.indexOf(c)) % PALETTE.length];
     const R = 80, r = 52, cx = 100, cy = 100;
     const pt = (a, rad) => [cx + rad * Math.sin(a), cy - rad * Math.cos(a)];
     let a0 = 0, paths = "", labels = "";

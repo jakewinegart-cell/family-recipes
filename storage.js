@@ -14,6 +14,7 @@
  *   listEdits(kind "recipe"|"news", id) -> Promise<Edit[]> newest first
  *   restoreVersion(editId, adminPasscode, editor)  (admin; restores the snapshot taken before that edit, logged as a new edit)
  *   Edit: {id, recipe_id|news_id, editor, edited_at, changed_fields[], previous{...snapshot}}
+ *   incrementVisits() -> Promise<number> (once per session); getVisits() -> Promise<number>
  *   verifySite(password) -> Promise<boolean>;  setSitePassword(newPw, adminPasscode)
  *   verifyAdmin(passcode)                   -> Promise<boolean>
  * Recipe: {id,title,category,ingredients[],steps[],prep_time,cook_time,servings,source,notes,
@@ -58,6 +59,8 @@
       this._check(p); const e = this._get("edits", []).find(x => x.id === editId); if (!e) throw new Error("Version not found");
       return e.recipe_id ? this.editRecipe(e.recipe_id, e.previous, editor + " (restore)") : this.editNews(e.news_id, e.previous, editor + " (restore)");
     }
+    async incrementVisits() { const n = (+localStorage.getItem("wr_visits") || 0) + 1; localStorage.setItem("wr_visits", n); return n; }
+    async getVisits() { return +localStorage.getItem("wr_visits") || 0; }
     async listNews() { return this._get("news", []).sort((a, b) => b.created_at.localeCompare(a.created_at)); }
     async addNews(n) { const it = { text: n.text, author: n.author, id: uid(), created_at: new Date().toISOString() }; this._set("news", [...this._get("news", []), it]); return it; }
     async deleteNews(id, p) { this._check(p); this._set("news", this._get("news", []).filter(n => n.id !== id)); this._set("edits", this._get("edits", []).filter(e => e.news_id !== id)); }
@@ -114,6 +117,8 @@
     async verifyAdmin(p) { return !!(await this._rpc("admin_verify", { p_passcode: p })); }
     async verifySite(pw) { return !!(await this._rpc("site_verify", { p_password: pw })); }
     setSitePassword(pw, p) { return this._rpc("admin_set_site_password", { p_passcode: p, p_new: pw }); }
+    async incrementVisits() { return Number(await this._rpc("increment_visits", {})); }
+    async getVisits() { return Number(await this._rpc("get_visits", {})); }
     listNews() { return this._req("/rest/v1/news?select=*&order=created_at.desc&limit=200"); }
     async addNews(n) { return (await this._req("/rest/v1/news", { method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify({ text: n.text, author: n.author }) }))[0]; }
     deleteNews(id, p) { return this._rpc("admin_delete_news", { p_passcode: p, p_id: id }); }

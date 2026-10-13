@@ -141,3 +141,7 @@ body.gated{overflow:hidden}
 .newslist .history{margin-top:6px;padding:6px 10px}.newslist .history li{font-size:.82rem}
 .pv.new img{outline:2px solid var(--accent2)}
 a.btn{text-decoration:none;display:inline-block}
+
+/* rec10 visit counter */
+.visits{flex:none;font-size:.78rem;color:var(--muted);white-space:nowrap;opacity:.9}
+@media(max-width:600px){.visits .vlabel{display:none}.visits{font-size:.72rem}.topbar{gap:4px;padding:6px 6px}.tab{padding:8px 10px}}
