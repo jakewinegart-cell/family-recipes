@@ -187,6 +187,25 @@
     catch (err) { toast("Couldn't post: " + err.message); } finally { $("#newsPost").disabled = false; }
   };
 
+  /* ---------- Catholic Saint of the Day (bundled calendar, America/Denver date) ---------- */
+  let saintKey = "";
+  function renderSaint() {
+    const el = $("#saintCard"); if (!window.Saints) return el.classList.add("hidden");
+    try {
+      const { y, m, d } = Saints.denverParts(); const k = `${y}-${m}-${d}`; if (k === saintKey) return; saintKey = k;
+      const r = Saints.saintOfDay(y, m, d);
+      const dateStr = new Date(Date.UTC(y, m - 1, d)).toLocaleDateString("en-US", { timeZone: "UTC", weekday: "long", month: "long", day: "numeric", year: "numeric" });
+      el.innerHTML = `<div class="saint-icon" aria-hidden="true">✝</div><div class="saint-body">
+        <p class="saint-kicker">Saint of the Day · ${esc(dateStr)}</p>
+        <h3 class="saint-name">${esc(r.title)}</h3>
+        <p class="saint-rank">${esc(r.rank)}${r.title !== r.day ? ` · ${esc(r.day)}` : ""}</p>
+        <p class="saint-desc">${esc(r.desc || `No saint is celebrated on the calendar today: a quiet weekday of ${r.season}.`)}</p>
+        ${r.also.length ? `<p class="saint-also">Also: ${r.also.map(esc).join("; ")}</p>` : ""}</div>`;
+      el.classList.remove("hidden");
+    } catch (e) { console.error(e); el.classList.add("hidden"); }
+  }
+  renderSaint(); setInterval(renderSaint, 60 * 1000); // re-checks each minute; changes at midnight Denver time
+
   /* ---------- weather (Open-Meteo, Florence MT) ---------- */
   const WX_URL = "https://api.open-meteo.com/v1/forecast?latitude=46.6316&longitude=-114.0790&current=temperature_2m,weather_code,wind_speed_10m,is_day&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America/Denver";
   const wxInfo = c => c === 0 ? ["☀️", "Clear"] : c <= 2 ? ["🌤️", "Partly cloudy"] : c === 3 ? ["☁️", "Overcast"] : c <= 48 ? ["🌫️", "Fog"]

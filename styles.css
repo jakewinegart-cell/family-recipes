@@ -151,3 +151,15 @@ a.btn{text-decoration:none;display:inline-block}
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .lastadded a{color:#fff3dc;text-decoration:underline;text-decoration-color:rgba(255,243,220,.5);text-underline-offset:3px}
 .lastadded a:hover{text-decoration-color:#fff3dc}
+
+/* rec12 saint of the day */
+.saintcard{max-width:980px;margin:0 auto 6px;width:calc(100% - 28px);display:flex;gap:14px;align-items:flex-start;padding:16px 18px;
+  background:rgba(255,250,242,.82);backdrop-filter:blur(3px)}
+@media(min-width:900px){.saintcard{max-width:1152px}}
+.saint-icon{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--cream);color:var(--accent);font-size:1.3rem;border:1px solid var(--line)}
+.saint-body{min-width:0}
+.saint-kicker{margin:0;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.saint-name{margin:.15em 0 .1em;color:var(--ink);font-size:1.12rem;line-height:1.3;font-weight:700}
+.saint-rank{margin:0;color:var(--accent);font-size:.86rem;font-weight:600}
+.saint-desc{margin:.35em 0 0;font-style:italic;font-size:.92rem}
+.saint-also{margin:.35em 0 0;font-size:.8rem;color:var(--muted)}
